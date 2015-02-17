@@ -1,3 +1,4 @@
 class Url < ActiveRecord::Base
-  has_and_belongs_to_many :phrases
+  has_many :phrases_urls
+  has_many :phrases, through: :phrases_urls
 end
