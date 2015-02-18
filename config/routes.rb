@@ -1,6 +1,9 @@
 Rails.application.routes.draw do
   get 'front/index'
-
+  post '/' => 'front#search'
+  get 'submit' => 'front#submit_url'
+  post 'submit' => 'front#add_site'
+  #post 'submit' => 'front#submit_url'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

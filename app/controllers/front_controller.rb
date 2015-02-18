@@ -1,6 +1,6 @@
 class FrontController < ApplicationController
   def index
   end
-  def submit_url
+  def submit_urls
   end
 end
