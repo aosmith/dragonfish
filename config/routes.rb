@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
-  get 'front/index'
-  post '/' => 'front#search'
+  get 'front#index'
+  get 'search' => 'front#search'
   get 'submit' => 'front#submit'
   post 'submit' => 'front#add_site'
   #post 'submit' => 'front#submit_url'
