@@ -11,7 +11,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150217071108) do
+ActiveRecord::Schema.define(version: 20150219195637) do
+
+  create_table "crawl_requests", force: :cascade do |t|
+    t.string   "onion_url"
+    t.text     "raw_content"
+    t.boolean  "indexed"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
 
   create_table "phrases", force: :cascade do |t|
     t.string   "text"

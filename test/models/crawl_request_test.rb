@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class UrlTest < ActiveSupport::TestCase
+class CrawlRequestTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end
