@@ -39,6 +39,7 @@ gem 'socksify'
 
 #Indexing
 gem 'sidekiq'
+gem 'nokogiri'
 gem 'highscore'
 gem 'bloomfilter-rb'
 gem 'fast-stemmer'

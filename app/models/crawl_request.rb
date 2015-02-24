@@ -27,7 +27,7 @@ class CrawlRequest < ActiveRecord::Base
   end
 
   def base_url
-    return self.onion_url.gsub(/\.onion\/.*, ".onion/)
+    return self.onion_url.gsub(/\.onion\/.*/, ".onion/")
   end
 
   private

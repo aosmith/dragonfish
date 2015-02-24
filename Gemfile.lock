@@ -190,6 +190,7 @@ DEPENDENCIES
   jquery-rails
   less-rails
   less-rails-bootstrap
+  nokogiri
   rails (= 4.2.0)
   sdoc (~> 0.4.0)
   sidekiq
