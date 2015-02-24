@@ -38,10 +38,10 @@ gem 'tor-control'
 gem 'socksify'
 
 #Indexing
+gem 'sidekiq'
 gem 'highscore'
 gem 'bloomfilter-rb'
 gem 'fast-stemmer'
-
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
