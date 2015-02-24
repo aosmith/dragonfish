@@ -1,0 +1,40 @@
+<div class="container">
+  <div class="col-lg-8 col-lg-offset-2">
+    <h2 class="center header">Submit .onion sites for indexing</h1>
+  </div>
+  <div class="col-lg-8 col-lg-offset-2">
+    <input id="input-box" class="h-fill search-box" type="text" name="url" placeholder=""/>
+  </div>
+  <div class="col-lg-8 col-lg-offset-2">
+    <div class="center message" id="message">
+
+    </div>
+    <div class="center">
+      <input id="submit-btn" class="btn btn-lg btn-primary" value="Submit"/>
+    </div>
+  </div>
+  <a class="submit-links" href="/submit">Submit new .onion sites</a>
+</div>
+
+<script type="text/javascript">
+$('#submit-btn').click(function() {
+  onionUrl = $($('#input-box')[0]).val()
+  $.ajax({
+    type: "POST",
+    url: "/submit",
+    data: { onion_url: onionUrl },
+    accepts: JSON,
+    complete: function(data, textStatus, jqXHR) { 
+      var message; 
+      try {
+        message = JSON.parse(data.responseText).errors.join(", ");
+      } catch(e) {
+        message = "Thanks!";
+        $($('#input-box')[0]).val("");
+      }
+      document.getElementById("message").innerHTML = message;
+    },
+    dataType: "json"
+  });
+});
+</script>

@@ -2,10 +2,11 @@ class IndexerJob < ActiveJob::Base
   queue_as :default
 
   def perform(*args)
+    establish_tor_circuit
     TCPSocket::socks_server = "127.0.0.1"
     TCPSocket::socks_port = 9051
     args.map do |u|
-
+      Net::HTTP.get('u')
     end
   end
 

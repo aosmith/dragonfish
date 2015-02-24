@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  get 'front#index'
+  # get 'front#index'
   get 'search' => 'front#search'
   get 'submit' => 'front#submit'
   post 'submit' => 'front#add_site'

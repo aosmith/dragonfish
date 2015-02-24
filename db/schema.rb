@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150219195637) do
+ActiveRecord::Schema.define(version: 20150223203505) do
 
   create_table "crawl_requests", force: :cascade do |t|
     t.string   "onion_url"
@@ -19,6 +19,11 @@ ActiveRecord::Schema.define(version: 20150219195637) do
     t.boolean  "indexed"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+  end
+
+  create_table "pages", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "phrases", force: :cascade do |t|
@@ -34,6 +39,11 @@ ActiveRecord::Schema.define(version: 20150219195637) do
 
   add_index "phrases_urls", ["phrase_id"], name: "index_phrases_urls_on_phrase_id"
   add_index "phrases_urls", ["url_id"], name: "index_phrases_urls_on_url_id"
+
+  create_table "sites", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "urls", force: :cascade do |t|
     t.string   "onion_address"

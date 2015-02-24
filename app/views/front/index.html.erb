@@ -16,14 +16,6 @@
 <script type="text/javascript">
 function search() {
   terms = document.getElementById("searchBox").value;
-  $.ajax({
-    type: "POST",
-    url: "/",
-    data: { terms: terms },
-    success: function(d,ts,jqxhr) {
-      console.log(d);
-      console.log(ts);
-    },
-    dataType: "JSON" });
+  document.location = "/search?terms=" + encodeURI(terms);
 }
 </script>

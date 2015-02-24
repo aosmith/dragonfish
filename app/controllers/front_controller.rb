@@ -7,14 +7,11 @@ class FrontController < ApplicationController
   end
 
   def add_site
-    @crawl_request = CrawlRequest.new(params[:crawl_request])
-    if @crawl_request.valid?
-      @crawl_request.save
-      template nil
-      render status: 201
+    @crawl_request = CrawlRequest.create(onion_url: params["onion_url"])
+    if @crawl_request.save
+      render status: 201, json: { crawl_request: @crawl_request }
     else
-      template nil
-      render status: 400
+      render status: 400, json: { errors: @crawl_request.errors.full_messages }
     end
   end
 
@@ -22,4 +19,6 @@ class FrontController < ApplicationController
     terms = params["terms"].split(" ")
     render json: { terms: terms }
   end
+
+  private
 end
