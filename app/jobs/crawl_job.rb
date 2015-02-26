@@ -2,29 +2,32 @@ class CrawlJob < ActiveJob::Base
   queue_as :default
 
   def perform(args)
+    logger.debug args.inspect
     establish_tor_circuit
     TCPSocket::socks_server = "127.0.0.1"
     TCPSocket::socks_port = 9050
     uri = URI("http://#{args.onion_url}")
     res = Net::HTTP.get(uri).force_encoding(Encoding::UTF_8)
+    relative_urls = res.scan(/<a(.*)href=\\"\/(.*)?\"(^>)?>/)
     text_only = CGI::unescapeHTML(res.gsub(/<\/?[^>]*>/,""))
-    keywords = Highscore::Content.new text_only, generate_blacklist
-    keywords.configure do
-      set :short_words_threshold, 4
-      set :ignore_case, true
-    end
+    onion_urls = res.scan(/(http(s)?\:\/\/)?([A-z,0-9]{16}\.onion)(\/)?([^\s,",<,>]*)?/)
     base_url = args.base_url
-    site = Site.find({ base_url: base_url })
+    site = Site.find_by({ base_url: base_url })
     if site.nil?
       site = Site.new({ base_url: base_url })
     end
-    keywords.keywords.top(100).each do |keyword|
-      existing_kw = Keyword.find_by({ keyword: keyword })
-      if existing_kw
-      end
+    logger.debug res
+    relative_urls.each do |u|
+      logger.debug "relative url: #{u}"
+      c = CrawlRequest.create({ onion_url: "#{args.base_url}#{relative_url}" })
+      c.save
     end
-    args.indexed = true
-
+    onion_urls.each do |o|
+      logger.debug "onions: #{o.join()}"
+      c = CrawlRequest.create({ onion_url: o.join() })
+      c.save
+    end
+    close_tor_circuit
   end
 
   private
@@ -42,13 +45,4 @@ class CrawlJob < ActiveJob::Base
     TorControl.close
   end
 
-  def generate_blacklist
-    blacklist = Highscore::Blacklist.new
-    blacklist << "tor"
-    blacklist << "irc"
-    blacklist << "for"
-    blacklist << "the"
-    blacklist << "and"
-    blacklist
-  end
 end

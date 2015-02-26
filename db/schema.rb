@@ -11,44 +11,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150223203505) do
+ActiveRecord::Schema.define(version: 20150224043021) do
 
   create_table "crawl_requests", force: :cascade do |t|
     t.string   "onion_url"
-    t.text     "raw_content"
     t.boolean  "indexed"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "last_index"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "pages", force: :cascade do |t|
+    t.integer  "site_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
-
-  create_table "phrases", force: :cascade do |t|
-    t.string   "text"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "phrases_urls", force: :cascade do |t|
-    t.integer "url_id"
-    t.integer "phrase_id"
-  end
-
-  add_index "phrases_urls", ["phrase_id"], name: "index_phrases_urls_on_phrase_id"
-  add_index "phrases_urls", ["url_id"], name: "index_phrases_urls_on_url_id"
 
   create_table "sites", force: :cascade do |t|
+    t.string   "base_url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "urls", force: :cascade do |t|
-    t.string   "onion_address"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
   end
 
 end
