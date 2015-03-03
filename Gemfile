@@ -40,6 +40,10 @@ gem 'socksify'
 
 #Indexing
 gem 'sidekiq'
+gem 'sinatra'
+gem 'slim', '1.3.2'
+
+
 gem 'elasticsearch'
 
 

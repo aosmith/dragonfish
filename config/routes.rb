@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  require 'sidekiq/web'
+  mount Sidekiq::Web => '/sidekiq'
+
   # get 'front#index'
   get 'search' => 'front#search'
   get 'submit' => 'front#submit'
