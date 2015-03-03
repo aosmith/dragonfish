@@ -9,8 +9,8 @@ class CrawlJob < ActiveJob::Base
     uri = URI("http://#{args.onion_url}")
     res = Net::HTTP.get(uri).force_encoding(Encoding::UTF_8)
     relative_urls = res.scan(/<a(.*)href=\\"\/(.*)?\"(^>)?>/)
-    text_only = CGI::unescapeHTML(res.gsub(/<\/?[^>]*>/,""))
-    onion_urls = res.scan(/(http(s)?\:\/\/)?([A-z,0-9]{16}\.onion)(\/)?([^\s,",<,>]*)?/)
+    text_only = CGI::unescapeHTML(res.gsub(/<[^>]*>/,""))
+    onion_urls = res.scan(/(http(s)?\:\/\/)?([A-z0-9]{16}\.onion)(\/)?([\S]*)?/)
     base_url = args.base_url
     site = Site.find_by({ base_url: base_url })
     if site.nil?
@@ -23,9 +23,13 @@ class CrawlJob < ActiveJob::Base
       c.save
     end
     onion_urls.each do |o|
-      logger.debug "onions: #{o.join()}"
-      c = CrawlRequest.create({ onion_url: o.join() })
-      c.save
+      begin
+        logger.debug "onion url found: #{o.join()}"
+        c = CrawlRequest.create({ onion_url: o.join() })
+        c.save
+      rescue
+        logger.debug "Error for: #{o.join()}"
+      end
     end
     close_tor_circuit
   end
