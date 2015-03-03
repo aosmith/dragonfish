@@ -11,7 +11,7 @@ class CrawlJob < ActiveJob::Base
     res = Net::HTTP.get(uri).force_encoding(Encoding::UTF_8)
     relative_urls = res.scan(/<a(.*)href=\\"\/(.*)?\"(^>)?>/)
     text_only = CGI::unescapeHTML(res.gsub(/<[^>]*>/,""))
-    onion_urls = res.scan(/(http(s)?\:\/\/)?([A-z0-9]{16}\.onion)(\/)?([\S]*)?/)
+    onion_urls = res.scan(/(http(s)?\:\/\/)?([A-z0-9]{16}\.onion)(\/)?([^\"](.)*[^\"])?/)
     base_url = args.base_url
     site = Site.find_by({ base_url: base_url })
     if site.nil?

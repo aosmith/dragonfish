@@ -5,3 +5,6 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+
+CrawlRequest.create({ onion_url: "http://32rfckwuorlf4dlv.onion/" })
+CrawlRequest.create({ onion_url: "http://kpvz7ki2v5agwt35.onion" })
