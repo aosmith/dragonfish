@@ -9,3 +9,10 @@ Getting Started
 3. Install / configure tor.  BE CAREFUL.
 4. run `bundle exec rake:db:seed` (this will seed your crawler wtih some wikis)
 5. Start sidekiq by running `sidekiq`
+
+
+Roadmap
+-------
+- Redis K/V store for url:crawl\_date
+- Elasticsearch indexing for html and stripped text
+- 

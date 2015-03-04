@@ -9,14 +9,15 @@ class CrawlJob < ActiveJob::Base
     TCPSocket::socks_port = 9050
     uri = URI("http://#{args.onion_url}")
     res = Net::HTTP.get(uri).force_encoding(Encoding::UTF_8)
-    relative_urls = res.scan(/.*href="(\S*)"/)
-    # text_only = CGI::unescapeHTML(res.gsub(/<[^>]*>/,""))
-    onion_urls = res.scan(/(http(s)?\:\/\/)?([A-z0-9]{16}\.onion)(\/)?([^\"](.)*[^\"])?/)
+    # relative_urls = res.scan(/.*href="(\S*)"/)
+    text_only = CGI::unescapeHTML(res.gsub(/<[^>]*>/,""))
+    onion_urls = res.scan(/(http(s)?)(:\/\/)([A-z0-9]{16}\.onion[^"|\s|<]*)/)
     base_url = args.base_url
     site = Site.find_by({ base_url: base_url })
     if site.nil?
-      site = Site.new({ base_url: base_url })
+      site = Site.create({ base_url: base_url })
     end
+    Page.create({ url: args.onion_url })
     logger.debug res
     relative_urls.each do |u|
       sanitized = sanitize_relative_url args.base_url, u
@@ -39,13 +40,20 @@ class CrawlJob < ActiveJob::Base
   private
 
   def sanitize_relative_url base, rel
-    if url.start_with? "//"
+    if rel.is_a? Array
+      rel = rel.join
+    end
+    if rel.start_with? "//"
       return "http:#{url}"
-    elsif url.start_with? "/"
+    elsif rel.start_with? "/"
       return "http://#{base}#{rel}"
-    elsif url.start_with? "http:"
+    elsif rel.start_with? "http:"
       return rel
     end
+  end
+
+  def scrape_urls text
+
   end
 
   def establish_tor_circuit
@@ -54,7 +62,6 @@ class CrawlJob < ActiveJob::Base
     TorControl.control_port = 9051
     TorControl.connect
     TorControl.authenticate
-    TorControl.new_identity
   end
 
   def close_tor_circuit
