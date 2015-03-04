@@ -12,26 +12,12 @@ class CrawlJob < ActiveJob::Base
     # relative_urls = res.scan(/.*href="(\S*)"/)
     text_only = CGI::unescapeHTML(res.gsub(/<[^>]*>/,""))
     onion_urls = res.scan(/(http(s)?)(:\/\/)([A-z0-9]{16}\.onion[^"|\s|<]*)/)
-    base_url = args.base_url
-    site = Site.find_by({ base_url: base_url })
-    if site.nil?
-      site = Site.create({ base_url: base_url })
-    end
-    Page.create({ url: args.onion_url })
-    logger.debug res
-    relative_urls.each do |u|
-      sanitized = sanitize_relative_url args.base_url, u
-      logger.debug "relative url: #{u}"
-      c = CrawlRequest.create({ onion_url: "#{sanitized}" })
-      c.save
-    end
+    Page.create({ url: args.onion_url, html_contnet: res, text_content: text_only })
     onion_urls.each do |o|
       begin
         logger.debug "onion url found: #{o.join()}"
-        c = CrawlRequest.create({ onion_url: o.join() })
-        c.save
+        CrawlRequest.create({ onion_url: o.join() })
       rescue
-        logger.debug "Error for: #{o.join()}"
       end
     end
     close_tor_circuit
