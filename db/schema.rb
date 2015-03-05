@@ -29,8 +29,8 @@ ActiveRecord::Schema.define(version: 20150223203505) do
     t.string   "url"
     t.string   "text_content"
     t.string   "html_content"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
   end
 
   create_table "sites", force: :cascade do |t|
