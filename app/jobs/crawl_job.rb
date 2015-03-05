@@ -11,7 +11,7 @@ class CrawlJob < ActiveJob::Base
     res = Net::HTTP.get(uri).force_encoding(Encoding::UTF_8)
     # relative_urls = res.scan(/.*href="(\S*)"/)
     text_only = CGI::unescapeHTML(res.gsub(/<[^>]*>/,""))
-    onion_urls = res.scan(/(http(s)?)(:\/\/)([A-z0-9]{16}\.onion[^"|\s|<]*)/)
+    onion_urls = res.scan(/(http(s)?)(:\/\/)([A-z0-9]{16}\.onion[^"|\s|<|']*)/)
     Page.create({ url: args.onion_url, html_contnet: res, text_content: text_only })
     onion_urls.each do |o|
       begin
